@@ -1,0 +1,31 @@
+FROM node:alpine
+
+LABEL MAINTAINER "waruid@gmail.com"
+
+WORKDIR '/app'
+
+COPY package.json .
+
+RUN npm install -g npm@8.17.0
+
+# RUN npm install -g npm@8.15.0
+
+# RUN npm install -g npm@8.17.0
+
+# RUN npm i --save-dev @testing-library/jest-dom
+
+#REMOVE PROXIES
+# RUN npm config rm proxy
+# RUN npm config rm https-proxy
+
+#CHANGE TIMEOUTS
+# RUN npm config set fetch-retry-mintimeout 200000
+# RUN npm config set fetch-retry-maxtimeout 1200000
+
+# RUN npm config set registry http://registry.npmjs.org/
+
+RUN npm install --save-dev @testing-library/dom
+
+COPY . .
+
+CMD ["npm","run","start"]
