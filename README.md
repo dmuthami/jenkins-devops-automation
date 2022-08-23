@@ -47,12 +47,12 @@ docker rm $(docker ps -a -f status=exited -q)
 
 docker rmi $(docker images -a -q)
 
-# Jenkins credentials cloud
+# Jenkins credentials cloud for Github
 
 token: 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
 expiry = Never
 Name=Jenkins_v3
 
-token = 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
+token =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
 Expiry= never
-Name=Jenkins integration CI/CD
+Name=JENKINS-DEVOPS-AUTOMATION
