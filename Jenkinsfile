@@ -1,28 +1,33 @@
-#!/usr/bin/env groovy
+node {
+    def app
 
-pipeline {
+    stage('Clone repository') {
+        /* Cloning the Repository to our Workspace */
 
-    agent {
-        docker {
-            image 'node'
-            args '-u root'
+        checkout scm
+    }
+
+    stage('Build image') {
+        /* This builds the actual image */
+
+        app = docker.build("dmuthami/jenkins-devops-automation-pipeline")
+    }
+
+    stage('Test image') {
+        
+        app.inside {
+            echo "Tests passed"
         }
     }
 
-    stages {
-        stage('Build') {
-            /* This install the node modules/binaries */
-            steps {
-                echo 'Building...'
-                sh 'npm install'
-            }
-        }
-        stage('Test') {
-             /* This builds the actual image */
-            steps {
-                echo 'Testing...'
-                sh 'npm test'
-            }
-        }
+    stage('Push image') {
+        /* 
+			You would need to first register with DockerHub before you can push images to your account
+		*/
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
+            } 
+                echo "Trying to Push Docker Build to DockerHub"
     }
 }
